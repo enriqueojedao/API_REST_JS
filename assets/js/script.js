@@ -1,7 +1,7 @@
 const tasks = [
-    { id: 1, description: "Estudiar JavaScript", completed: false },
-    { id: 2, description: "Completar desafío", completed: false },
-    { id: 3, description: "Leer guía de estudio", completed: false }
+    { id: 1, description: "Comprar en el súper", completed: false },
+    { id: 2, description: "Estudiar en la semana", completed: false },
+    { id: 3, description: "Buscar detergente en el centro", completed: false }
 ];
 
 const taskList = document.querySelector('#task-list');
