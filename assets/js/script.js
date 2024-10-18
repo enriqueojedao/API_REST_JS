@@ -1,58 +1,76 @@
-const tasks = [
-    { id: 1, description: "Comprar en el súper", completed: false },
-    { id: 2, description: "Estudiar en la semana", completed: false },
-    { id: 3, description: "Buscar detergente en el centro", completed: false }
-];
+let chartInstance = null; // Variable global para almacenar la instancia del gráfico, así no se queda siempre el mismo.
 
-const taskList = document.querySelector('#task-list');
-const newTaskInput = document.querySelector('#new-task');
-const addTaskBtn = document.querySelector('#add-task-btn');
-const totalTasksSpan = document.querySelector('#total-tasks');
-const completedTasksSpan = document.querySelector('#completed-tasks');
-
-function renderTasks() {
-    taskList.innerHTML = '';  
-    tasks.forEach(task => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${task.id}</td>
-            <td class="${task.completed ? 'completed' : ''}">${task.description}</td>
-            <td>
-                <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="toggleTask(${task.id})">
-                <button class="delete-btn" onclick="deleteTask(${task.id})">❌</button>
-            </td>
-        `;
-        taskList.appendChild(tr);
-    });
-    updateTaskCount();
+//Aquí controlo que en la salida del cálculo me diga el tipo de moneda.
+const getCurrencyName = (currency) => {
+    if (currency === 'dolar') {
+        return '$ (USD)';
+    } else if (currency === 'euro') {
+        return '€ (EUR)';
+    } else if (currency === 'uf') {
+        return 'UF';
+    }
+    return '';
 }
 
-function updateTaskCount() {
-    totalTasksSpan.textContent = tasks.length;
-    completedTasksSpan.textContent = tasks.filter(task => task.completed).length;
-}
+document.getElementById('convert-btn').addEventListener('click', async () => {
+    const amount = document.getElementById('amount').value;
+    if (amount <= 0) {
+        document.getElementById('result').textContent = 'El monto debe ser un número mayor a cero "0".';
+        return;
+    }
+    const currency = document.getElementById('currency').value;
 
-function addTask() {
-    const description = newTaskInput.value.trim();
-    if (description) {
-        const newTask = { id: Date.now(), description, completed: false };
-        tasks.push(newTask);
-        newTaskInput.value = '';
-        renderTasks();
+    try {
+        const response = await fetch(`https://mindicador.cl/api`);
+        const data = await response.json();
+
+        const exchangeRate = data[currency].valor;
+        const convertedAmount = (amount / exchangeRate).toFixed(2);
+        const currencyName = getCurrencyName(currency);
+
+        document.getElementById('result').textContent = 
+            `Resultado: ${convertedAmount} ${currencyName}`;
+
+        // Renderizar la gráfica, con el currency ya sabe la moneda.
+        renderHistoryChart(currency);
+        
+        // Mostrar el contenedor del gráfico en el DOM.
+        document.getElementById('history-container').style.display = 'block';
+        
+    } catch (error) {
+        document.getElementById('result').textContent = 
+            'Error al obtener los datos. Intente nuevamente.';
+    }
+});
+
+async function renderHistoryChart(currency) {
+    try {
+        const response = await fetch(`https://mindicador.cl/api/${currency}`);
+        const data = await response.json();
+        const labels = data.serie.slice(0, 10).map(item => item.fecha.slice(0, 10));
+        const values = data.serie.slice(0, 10).map(item => item.valor);
+
+        // Si existe una gráfica previa, la destruye, así no se queda pegado.
+        if (chartInstance !== null) {
+            chartInstance.destroy();
+        }
+
+        const ctx = document.getElementById('historyChart').getContext('2d');
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: `Historial de ${currency.toUpperCase()}`,
+                    data: values,
+                    borderColor: 'rgb(75, 192, 192)',
+                    fill: false
+                }]
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error al obtener el historial:', error);
     }
 }
-
-function deleteTask(id) {
-    const index = tasks.findIndex(task => task.id === id);
-    tasks.splice(index, 1);
-    renderTasks();
-}
-
-function toggleTask(id) {
-    const task = tasks.find(task => task.id === id);
-    task.completed = !task.completed;
-    renderTasks();
-}
-
-addTaskBtn.addEventListener('click', addTask);
-renderTasks();
+//Enrique Ojeda.

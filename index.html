@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
+    <meta property="og:image" content="./assets/img/Miniatura.png"/>
+    <title>Conversor de Monedas</title>
     <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <h1>Lista de Tareas</h1>
-    <div class="todo-container">
-        <input type="text" id="new-task" placeholder="Nueva tarea...">
-        <button id="add-task-btn">Agregar tarea</button>
-        <table id="task-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tarea</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="task-list"></tbody>
-        </table>
+    <h1>Conversor de Monedas Nacional💰.</h1>
+    <div class="container">
+        <label for="amount">
+            <h2>Pesos CLP</h2>
+        </label>
+        <input type="number" id="amount" placeholder="Ingrese el monto en pesos chilenos" autocomplete="off">
+
+        <label for="currency">Seleccione moneda:</label>
+        <select id="currency">
+            <option value="dolar">Dólar $ (USD)</option>
+            <option value="euro">Euro € (EUR)</option>
+            <option value="uf">Unidad de Fomento (UF)</option>
+        </select>
+        <button id="convert-btn">Convertir💸</button>
     </div>
-    <div class="summary">
-        <p>Total de tareas: <span id="total-tasks">0</span></p>
-        <p>Tareas completadas: <span id="completed-tasks">0</span></p>
+    <div id="result"></div>
+    <!-- Contenedor del historial y el gráfico, inicialmente están ocultos -->
+    <div class="container-chart" id="history-container" style="display: none;">
+        <h2 class="sub-chart">Historial de los últimos 10 días</h2>
+        <canvas id="historyChart"></canvas>
     </div>
     <script src="./assets/js/script.js"></script>
 </body>
+
 </html>

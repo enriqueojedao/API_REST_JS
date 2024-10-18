@@ -1,90 +1,103 @@
 body {
+    display: flex;
+    flex-direction: column;
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    text-align: center;
+    padding: 20px;
+    background-color: black;
+    color: rgb(255, 255, 255);
+    align-items: center;
+    gap: 10px;
+}
+
+h2 {
+    margin: 0%;
+}
+
+.container {
+    background-color: rgb(95, 95, 95);
+    color: beige;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0;
-    padding: 20px;
-}
-
-.todo-container {
-    background-color: #fff;
     padding: 20px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    width: 500px;
+    width: 40vh;
+    border: 1px solid beige;
+}
+.container-chart {
+    max-width: 800px;
+    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    width: 80vh;
+    height: fit-content;
 }
 
-input[type="text"] {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+label {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: large
+}
+
+input {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 5px;
+}
+
+select {
+    display: flex;
+    width: 70%;
+    margin-bottom: 15px;
+    padding: 5px;
 }
 
 button {
-    padding: 10px;
-    background-color: #28a745;
+    background-color: #528ebf;
     color: white;
     border: none;
-    border-radius: 3px;
     cursor: pointer;
+    margin: 5px;
+    width: 70%;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: medium;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5)
 }
 
 button:hover {
-    background-color: #218838;
+    background-color: rgb(131, 131, 35);
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+button:active {
+    transform: scale(1.1);
 }
 
-table th, table td {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    text-align: left;
-}
-
-table th {
-    background-color: #f2f2f2;
-}
-
-.completed {
-    text-decoration: line-through;
-    color: green;
-}
-
-input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
-.delete-btn {
-    background: none;
-    border: none;
+#result {
+    margin: 0px;
     font-size: 18px;
-    cursor: pointer;
-    color: red;
-    margin-left: 10px;
 }
 
-.delete-btn:hover {
-    color: darkred;
+.sub-chart {
+    color: black;
+    margin: 0;
 }
 
-.summary {
-    margin-top: 20px;
+canvas {
+    margin-top: 10px;
+    width: 100%
 }
 
-.summary p {
-    font-size: 1.2em;
-}
+/* Para pantallas de celular*/
+@media (max-width: 768px) {
+    .container {
+        width: 80vw;
+    }
 
-td {
-    vertical-align: middle;
+    .container-chart {
+        width: 90vw;
+        height: fit-content;
+    }
 }
